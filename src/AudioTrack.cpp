@@ -67,7 +67,7 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     #endif
     // Your code here...
        if (this != &other){
-        delete [] waveform_data;
+        delete[] waveform_data;
         title = other.title;
         artists= other.artists;
         duration_seconds = other.duration_seconds;
@@ -126,5 +126,5 @@ AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept {
 void AudioTrack::get_waveform_copy(double* buffer, size_t buffer_size) const {
     if (buffer && waveform_data && buffer_size <= waveform_size) {
         std::memcpy(buffer, waveform_data, buffer_size * sizeof(double));
-    }
+    } 
 }

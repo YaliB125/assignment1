@@ -34,7 +34,7 @@ void test_phase_1_memory_leaks() {
     AudioTrack* mp3 = new MP3Track("Sunset Lover", {"Petit Biscuit"}, 180, 120, 320);
     AudioTrack* wav = new WAVTrack("Strobe", {"Deadmau5"}, 645, 128, 44100, 16);
 
-    // Create playlist and add tracks (this will leak nodes if destructor is broken)
+    //Create playlist and add tracks (this will leak nodes if destructor is broken)
     std::cout << "Creating playlist..." << std::endl;
     Playlist* my_playlist = new Playlist("Chill House Mix");
 
