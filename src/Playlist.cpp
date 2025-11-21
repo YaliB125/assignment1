@@ -10,15 +10,72 @@ Playlist::Playlist(const std::string& name)
 // Students must fix this in Phase 1
 Playlist::~Playlist() {
     PlaylistNode* current = head;
-    while (current) {
+    while (current != nullptr) {
         PlaylistNode* nxt = current-> next;
-        remove_track(current->track->get_title());
+        delete current->track;
+        delete current;
         current = nxt;
     }
     
     #ifdef DEBUG
     std::cout << "Destroying playlist: " << playlist_name << std::endl;
     #endif
+}
+
+Playlist::Playlist(const Playlist& other) 
+    : head(nullptr), playlist_name(other.playlist_name), track_count(0){
+        PlaylistNode* start = other.head;
+        PlaylistNode* lastadded = nullptr;
+
+        while (start != nullptr){
+            PointerWrapper<AudioTrack> cloned = start->track->clone();
+            AudioTrack* newtrack = cloned.release();
+            PlaylistNode* newNode = new PlaylistNode(newtrack);
+            if (head == nullptr) {
+            head = newNode;
+        }   else {
+            lastadded->next = newNode;
+        }
+        lastadded = newNode;
+        start = start->next;
+        track_count++;
+    }
+}
+
+Playlist& Playlist::operator=(const Playlist& other) {
+    if (this != &other) { 
+        
+        PlaylistNode* current = head;
+        while (current != nullptr) {
+            PlaylistNode* nxt = current->next;
+            delete current->track; 
+            delete current;        
+            current = nxt;
+        }
+
+        head = nullptr;
+        track_count = 0;
+        playlist_name = other.playlist_name;
+
+        PlaylistNode* start = other.head;
+        PlaylistNode* lastadded = nullptr;
+
+        while (start != nullptr) {
+            PointerWrapper<AudioTrack> cloned = start->track->clone();
+            AudioTrack* newtrack = cloned.release();
+            PlaylistNode* newNode = new PlaylistNode(newtrack);
+
+            if (head == nullptr) {
+                head = newNode;
+            } else {
+                lastadded->next = newNode;
+            }
+            lastadded = newNode;
+            start = start->next;
+            track_count++;
+        }
+    }
+    return *this;
 }
 
 void Playlist::add_track(AudioTrack* track) {
@@ -57,7 +114,7 @@ void Playlist::remove_track(const std::string& title) {
             head = current->next;
         }
 
-        //delete current->track;
+        delete current->track;
         delete current;
         track_count--;
         std::cout << "Removed '" << title << "' from playlist" << std::endl;

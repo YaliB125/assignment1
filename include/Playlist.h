@@ -20,10 +20,7 @@ struct PlaylistNode {
     PlaylistNode* next;
 
     PlaylistNode(AudioTrack* t) : track(t), next(nullptr) {}
-
-    ~PlaylistNode() {
-        delete track;
-    }
+    ~PlaylistNode() = default;
 };
 
 class Playlist {
@@ -37,6 +34,8 @@ public:
      * Constructor
      */
     Playlist(const std::string& name="");
+    Playlist(const Playlist& other);     
+    Playlist& operator=(const Playlist& other);
 
     /**
      * Destructor
