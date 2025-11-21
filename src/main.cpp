@@ -75,7 +75,7 @@ void test_phase_2_rule_of_5() {
         MP3Track assigned("Temporary Track", {"Temp Artist"}, 100, 120, 128);
         assigned = original;  // Should call copy assignment
 
-        std::cout << "Assigned: " << assigned.get_title() << std::endl;
+        std::cout << "Assigned123: " << assigned.get_title() << std::endl;
 
         // Test move constructor
         std::cout << "\nTesting move constructor..." << std::endl;
@@ -89,7 +89,6 @@ void test_phase_2_rule_of_5() {
         std::cout << "❌ Exception caught: " << e.what() << std::endl;
         std::cout << "This indicates Rule of 5 implementation issues!\n" << std::endl;
     }
-    std::cout << "destructor wokrs well !!" << std::endl;
 }
 
 void test_phase_3() {
@@ -190,9 +189,7 @@ int main(int argc, char* argv[]) {
         // Test each phase individually
         test_phase_1_memory_leaks();
         test_phase_2_rule_of_5();
-        std::cout << "destructor works well!!" << std::endl;
-
-        // test_phase_3();
+        test_phase_3();
         // demonstrate_polymorphism();
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }
