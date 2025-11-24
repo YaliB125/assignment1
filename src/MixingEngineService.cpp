@@ -27,7 +27,7 @@ MixingEngineService::~MixingEngineService() {
             decks [i]= nullptr;
         }
     }
-    delete[] decks; //ask what should we delete in the end?
+    //delete[] decks; //ask what should we delete in the end?
 }
 
 
