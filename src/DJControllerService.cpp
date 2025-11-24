@@ -18,29 +18,21 @@ int DJControllerService::loadTrackToCache(AudioTrack& track) {
     }
     else{
         PointerWrapper<AudioTrack> clone = track.clone();
-        AudioTrack* ptr = clone.get();//ask
-        //AudioTrack* ptr = clone.get();//ask
+        AudioTrack* ptr = clone.get();
         if(!clone){
             std::cerr << "[ERROR] Track: \"" << track.get_title() << "\" clone is nullptr" << std::endl;
-            return -1; //ask: what to return
+            return 0; //ask: what to return
         }
-        // ptr->load();
-        // ptr->analyze_beatgrid();
         clone->load();
         clone->analyze_beatgrid();
-        //PointerWrapper<AudioTrack> new_ptr(ptr);//ask
-        //PointerWrapper<AudioTrack> new_ptr = make_pointer_wrapper<AudioTrack>(*ptr);//ask
         bool eviction_occurred = cache.put(std::move(clone));
-        //new_ptr.reset();
         if (eviction_occurred) {
             return -1;
         } 
         else {
             return 0;
         }
-        
     }
-    //return 0;
 }
 
 
