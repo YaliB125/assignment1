@@ -91,6 +91,33 @@ void test_phase_2_rule_of_5() {
     }
 }
 
+
+    void test_DJControllerService() {
+        std::cout << "\n===== TEST: DJControllerService =====\n";
+
+        DJControllerService controller(3);  // cache size 3
+
+        MP3Track track1("Track 1", {"Artist A"}, 180, 120, 320);
+        WAVTrack track2("Track 2", {"Artist B"}, 200, 128, 44100, 16);
+
+        // Load track1 into cache
+        int result = controller.loadTrackToCache(track1);
+        std::cout << "Loading 'Track 1': " << result << std::endl;
+
+        // Load track2 into cache
+        result = controller.loadTrackToCache(track2);
+        std::cout << "Loading 'Track 2': " << result << std::endl;
+
+        // Display cache status
+        controller.displayCacheStatus();
+
+        // Attempt to get track from cache
+        AudioTrack* ptr = controller.getTrackFromCache("Track 1");
+        if (ptr) std::cout << "Retrieved from cache: " << ptr->get_title() << std::endl;
+        else std::cout << "Track not found in cache\n";
+    }
+
+
 void test_phase_3() {
     std::cout << "\n======== PHASE 3: SMART POINTER TESTING ========" << std::endl;
     std::cout << "Testing DJUniquePtr implementation..." << std::endl;
@@ -190,6 +217,7 @@ int main(int argc, char* argv[]) {
         test_phase_1_memory_leaks();
         test_phase_2_rule_of_5();
         test_phase_3();
+        test_DJControllerService();
         // demonstrate_polymorphism();
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }

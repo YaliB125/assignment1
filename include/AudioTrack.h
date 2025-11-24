@@ -34,6 +34,8 @@ public:
     AudioTrack(const std::string& title, const std::vector<std::string>& artists, 
                int duration, int bpm, size_t waveform_samples = 1000);
 
+    void set_bpm(int new_bpm);          
+
     // ========== RULE OF 5 - STUDENTS MUST IMPLEMENT ALL OF THESE ==========
 
     /**
