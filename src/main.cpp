@@ -322,7 +322,7 @@ int main(int argc, char* argv[]) {
         // test_DJControllerService();
         // test_LRUCache_basic();
         //test_LRUCache_eviction();
-        // demonstrate_polymorphism();
+        demonstrate_polymorphism();
         //test_DJControllerService_eviction();
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }

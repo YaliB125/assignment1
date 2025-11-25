@@ -68,6 +68,7 @@ public:
 
     // ========== ORCHESTRATION METHODS ==========
 
+    void reset_stats();   
 
     /**
      * Contract: Load playlist into the session library
