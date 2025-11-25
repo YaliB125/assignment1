@@ -75,7 +75,7 @@ void test_phase_2_rule_of_5() {
         MP3Track assigned("Temporary Track", {"Temp Artist"}, 100, 120, 128);
         assigned = original;  // Should call copy assignment
 
-        std::cout << "Assigned123: " << assigned.get_title() << std::endl;
+        std::cout << "Assigned: " << assigned.get_title() << std::endl;
 
         // Test move constructor
         std::cout << "\nTesting move constructor..." << std::endl;
@@ -84,7 +84,6 @@ void test_phase_2_rule_of_5() {
         std::cout << "Moved: " << moved.get_title() << std::endl;
 
         std::cout << "Phase 2 test complete!\n" << std::endl;
-        std::cout << "Checking destructor?" << std::endl;
     } catch (const std::exception& e) {
         std::cout << "❌ Exception caught: " << e.what() << std::endl;
         std::cout << "This indicates Rule of 5 implementation issues!\n" << std::endl;
