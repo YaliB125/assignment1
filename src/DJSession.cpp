@@ -222,7 +222,7 @@ void DJSession::simulate_dj_performance() {
         //if(!user_selection.empty()){
         
         
-    std::cerr << "All playlists played"<<std::endl;
+    std::cerr << "Session cancelled by user or all playlists played."<<std::endl;
     }
 }
 
