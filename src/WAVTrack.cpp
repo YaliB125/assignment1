@@ -13,13 +13,13 @@ WAVTrack::WAVTrack(const std::string& title, const std::vector<std::string>& art
 void WAVTrack::load() {
     // TODO: Implement realistic WAV loading simulation
     // NOTE: Use exactly 2 spaces before the arrow (→) character
-    std::cout << "[WAVTrack::load] Loading WAV:\"" <<  title  << "\" at" << sample_rate << "Hz/"<< bit_depth<< "bit (uncompressed)..." << std::endl;
+    std::cout << "[WAVTrack::load] Loading WAV: \"" << title << "\" at " << sample_rate << "Hz/" << bit_depth << "bit (uncompressed)..." << std::endl;
     long long _duration_seconds =(long long)duration_seconds;
     long long _sample_rate = (long long)sample_rate;
     long long _bit_depth = (long long)bit_depth;
-    long long size = _duration_seconds * _sample_rate *(bit_depth/8) *2;
+    long long size = _duration_seconds * _sample_rate *(_bit_depth/8) *2;
 
-    std::cout <<"  -> Estimated file size: "<< size << "bytes" << std::endl;
+    std::cout <<"  -> Estimated file size: "<< size << " bytes" << std::endl;
     std::cout <<"  -> Fast loading due to uncompressed format." << std::endl;
 
 }
@@ -32,16 +32,15 @@ void WAVTrack::analyze_beatgrid() {
     // 2. Calculate beats: (duration_seconds / 60.0) * bpm
     // 3. Print number of beats and mention uncompressed precision
     // should print "  → Estimated beats: <beats>  → Precision factor: 1.0 (uncompressed audio)"
-    double estimated_beats = (duration_seconds / 60.0) *bpm;
-    double precision_factor = 1;
-    std::cout <<"  ->  Estimated beats:"<<  estimated_beats << "  ->Precision factor: 1 (uncompressed audio)" << std::endl;
+    double _estimated_beats = (duration_seconds / 60.0) *bpm;
+    std::cout <<"  ->  Estimated beats: " <<  _estimated_beats << "  -> Precision factor: 1.0 (uncompressed audio)" << std::endl;
 }
 
 double WAVTrack::get_quality_score() const {
     // TODO: Implement WAV quality scoring
     // NOTE: Use exactly 2 spaces before each arrow (→) character
     // NOTE: Cast beats to integer when printing
-    int score = 70;
+    double score = 70;
     if( sample_rate >= 44100){
         score = score + 10;
     }

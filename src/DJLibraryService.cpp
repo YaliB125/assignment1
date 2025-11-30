@@ -9,7 +9,9 @@
 
 
 DJLibraryService::DJLibraryService(const Playlist& playlist) 
-    : playlist(playlist) {}
+//    : playlist(playlist) {}
+ : playlist(playlist), library() {} //change
+
 /**
  * @brief Load a playlist from track indices referencing the library
  * @param library_tracks Vector of track info from config
@@ -17,6 +19,8 @@ DJLibraryService::DJLibraryService(const Playlist& playlist)
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>& library_tracks) {
     //Todo: Implement buildLibrary method
     std::cout << "TODO: Implement DJLibraryService::buildLibrary method\n"<< library_tracks.size() << " tracks to be loaded into library.\n";
+    for (AudioTrack* track : library) delete track;
+    library.clear();
     
     for (const SessionConfig::TrackInfo& info : library_tracks) {
 
@@ -30,7 +34,6 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
                 info.extra_param2
             ));
 
-            std::cout << "MP3Track created: " << info.extra_param1 << " kbps\n";
         }
 
         if (info.type == "WAV") {
@@ -42,8 +45,6 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
                 info.extra_param1,
                 info.extra_param2
             ));
-
-            std::cout << "WAVTrack created: " << info.extra_param1 << "Hz/" << info.extra_param2  << "bit\n";
         }
     }
     std::cout << "[INFO] Track library built: " << library.size() << "tracks loaded\n";
@@ -102,10 +103,10 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
     (void)playlist_name;  // Suppress unused parameter warning
     (void)track_indices;  // Suppress unused parameter warning
     std::cout << "[INFO] Loading playlist:" << playlist_name << std::endl;
-    Playlist new_playlist(playlist_name);
-    for (int i = 0; i < track_indices.size(); i++) {
+    playlist= Playlist(playlist_name);
+    for (size_t  i = 0; i < track_indices.size(); i++) {
         int inputIndex = track_indices[i]; 
-        if (inputIndex < 1 || inputIndex > library.size()){
+        if (inputIndex < 1 || inputIndex > (int)library.size()){
             std::cout << "[WARNING] Invalid track index:"<< i <<std::endl;
         }
         else{
@@ -118,12 +119,57 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
              else{
                 cloned_track->load();
                 cloned_track->analyze_beatgrid();
-                new_playlist.add_track(raw_ptr);
-                std::cout << "Added " << (*cloned_track).get_title()<< "to playlist " << playlist_name <<std::endl;
+                playlist.add_track(cloned_track.release());
              }
         }
     }
-    std::cout << "[INFO] Playlist loaded: " << playlist_name << "to playlist ( " <<  new_playlist.get_track_count() << " tracks)"<<std::endl;
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << "to playlist ( " <<  playlist.get_track_count() << " tracks)"<<std::endl;
+}
+DJLibraryService::~DJLibraryService() {  
+    for (AudioTrack* track : library) {
+        delete track;
+    } 
+library.clear();
+}
+
+DJLibraryService::DJLibraryService(const DJLibraryService& other)
+    : playlist(other.playlist), library() 
+{
+    for (const auto* track : other.library) {
+        if (track) {
+            library.push_back(track->clone().release());
+        }
+    }
+}
+
+DJLibraryService& DJLibraryService::operator=(const DJLibraryService& other) {    
+    if (this != &other) {
+        for (AudioTrack* track : library) {
+            delete track;
+        }
+        library.clear();
+        playlist = other.playlist;
+        for (const auto* track : other.library) {
+            if (track) {
+                library.push_back(track->clone().release());
+            }
+        }
+    }
+    return *this;
+}
+DJLibraryService::DJLibraryService(DJLibraryService&& other) noexcept
+    : playlist(std::move(other.playlist)), library(std::move(other.library)) {}
+
+DJLibraryService& DJLibraryService::operator=(DJLibraryService&& other) noexcept {
+    if (this != &other) {
+        for (AudioTrack* track : library) {
+            delete track;
+        }
+        library.clear();
+        playlist = std::move(other.playlist);
+        library = std::move(other.library); 
+    }
+    return *this;
 }
 
 
@@ -141,3 +187,5 @@ std::vector<std::string> DJLibraryService::getTrackTitles() const {
     }
     return titles; 
 }
+
+

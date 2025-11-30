@@ -18,10 +18,10 @@ int DJControllerService::loadTrackToCache(AudioTrack& track) {
     }
     else{
         PointerWrapper<AudioTrack> clone = track.clone();
-        AudioTrack* ptr = clone.get();
+        //AudioTrack* ptr = clone.get(); //removed because we dont call ptr
         if(!clone){
             std::cerr << "[ERROR] Track: \"" << track.get_title() << "\" clone is nullptr" << std::endl;
-            return 0; //ask: what to return
+            return 0; 
         }
         clone->load();
         clone->analyze_beatgrid();
@@ -60,3 +60,4 @@ AudioTrack* DJControllerService::getTrackFromCache(const std::string& track_titl
     }
     return nullptr;
 }
+

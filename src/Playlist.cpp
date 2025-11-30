@@ -93,7 +93,7 @@ void Playlist::add_track(AudioTrack* track) {
     track_count++;
 
     std::cout << "Added '" << track->get_title() << "' to playlist '" 
-              << playlist_name << "'" << std::endl;
+            << playlist_name << "'" << std::endl;
 }
 
 void Playlist::remove_track(const std::string& title) {
