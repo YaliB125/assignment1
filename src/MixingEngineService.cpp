@@ -8,8 +8,7 @@
  * TODO: Implement MixingEngineService constructor
  */
 MixingEngineService::MixingEngineService()
- //: active_deck(0),auto_sync(false),bpm_tolerance(0) 
-  : decks(), active_deck(1), auto_sync(false), bpm_tolerance(0) //change
+  : decks(), active_deck(1), auto_sync(false), bpm_tolerance(0) 
 {
     // Your implementation here
     decks[0]=nullptr;
@@ -29,7 +28,6 @@ MixingEngineService::~MixingEngineService() {
             decks [i]= nullptr;
         }
     }
-    //delete[] decks; //ask what should we delete in the end?
 }
 
 MixingEngineService::MixingEngineService(const MixingEngineService& other)
@@ -125,12 +123,6 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     }
     decks[target_deck] = cloned_wrapper.release();
     std::cout << "[Load Complete] '" << decks[target_deck]->get_title() << "' is now loaded on deck " << target_deck << std::endl;
-
-    // if (decks[active_deck] != nullptr) {
-    //     std::cout << "[Unload] Unloading previous deck " << active_deck << " ('" << decks[active_deck]->get_title() << "')" << "')" << std::endl;
-    //     delete decks[active_deck];
-    //     decks[active_deck] = nullptr;
-    // }
     
     active_deck = target_deck;
     std::cout << "[Active Deck] Switched to deck " << target_deck << std::endl;

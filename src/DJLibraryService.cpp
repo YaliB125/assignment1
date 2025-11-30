@@ -9,8 +9,7 @@
 
 
 DJLibraryService::DJLibraryService(const Playlist& playlist) 
-//    : playlist(playlist) {}
- : playlist(playlist), library() {} //change
+ : playlist(playlist), library() {} 
 
 /**
  * @brief Load a playlist from track indices referencing the library

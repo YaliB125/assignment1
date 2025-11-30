@@ -9,7 +9,6 @@
 
 
 DJSession::DJSession(const std::string& name, bool play_all)
-    //: session_name(name), play_all(play_all) { //change
      : session_name(name),
     library_service(),
     controller_service(),
@@ -216,11 +215,7 @@ void DJSession::simulate_dj_performance() {
                     
                 }
             user_selection = display_playlist_menu_from_config(); 
-        }
-        
-        
-        //if(!user_selection.empty()){
-        
+        }        
         
     std::cerr << "Session cancelled by user or all playlists played."<<std::endl;
     }

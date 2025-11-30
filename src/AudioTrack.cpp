@@ -6,8 +6,7 @@
 AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>& artists, 
                       int duration, int bpm, size_t waveform_samples)
     : title(title), artists(artists), duration_seconds(duration), bpm(bpm), 
-      //waveform_size(waveform_samples) {
-      waveform_data(nullptr), waveform_size(waveform_samples) { //change
+      waveform_data(nullptr), waveform_size(waveform_samples) { 
 
     // Allocate memory for waveform analysis
     waveform_data = new double[waveform_size];
@@ -52,10 +51,7 @@ AudioTrack::AudioTrack(const AudioTrack& other) : title(other.title),
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
     #endif
     // Your code here...
-    //std::vector<std::string> artisits;
-    //for(int i = 0; i< other.artists.size(); i++){
-       // artisits[i] = other.artists[i];
-    //}
+
     for (size_t i = 0; i < other.waveform_size; ++i) {
         waveform_data[i] = other.waveform_data[i];
     }
