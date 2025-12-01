@@ -90,63 +90,6 @@ void test_phase_2_rule_of_5() {
     }
 }
 
-
-    void test_DJControllerService() {
-        std::cout << "\n===== TEST: DJControllerService =====\n";
-
-        DJControllerService controller(3);  // cache size 3
-
-        MP3Track track1("Track 1", {"Artist A"}, 180, 120, 320);
-        WAVTrack track2("Track 2", {"Artist B"}, 200, 128, 44100, 16);
-
-        // Load track1 into cache
-        int result = controller.loadTrackToCache(track1);
-        std::cout << "Loading 'Track 1': " << result << std::endl;
-
-        // Load track2 into cache
-        result = controller.loadTrackToCache(track2);
-        std::cout << "Loading 'Track 2': " << result << std::endl;
-
-        // Display cache status
-        controller.displayCacheStatus();
-
-        // Attempt to get track from cache
-        AudioTrack* ptr = controller.getTrackFromCache("Track 1");
-        if (ptr) std::cout << "Retrieved from cache: " << ptr->get_title() << std::endl;
-        else std::cout << "Track not found in cache\n";
-    }
-
-    void test_LRUCache_basic()
-{
-    std::cout << "\n===== TEST: LRUCache basic insert & hit =====\n";
-
-    LRUCache cache(3);
-
-    MP3Track t1("Track 1", {"Artist A"}, 180, 120, 320);
-    WAVTrack t2("Track 2", {"Artist B"}, 200, 128, 44100, 16);
-
-    // Insert T1
-    bool evicted = cache.put(t1.clone());
-    std::cout << "After inserting Track 1: evicted=" << evicted
-              << " size=" << cache.size() << " (expect 1)\n";
-
-    // Insert T2
-    evicted = cache.put(t2.clone());
-    std::cout << "After inserting Track 2: evicted=" << evicted
-              << " size=" << cache.size() << " (expect 2)\n";
-
-    cache.displayStatus();
-
-    // HIT: access Track 1 (MRU refresh)
-    AudioTrack* p = cache.get("Track 1");
-    std::cout << "cache.get(\"Track 1\") returned "
-              << (p ? p->get_title() : std::string("nullptr")) << "\n";
-
-    cache.displayStatus();
-}
-
-
-
 void test_phase_3() {
     std::cout << "\n======== PHASE 3: SMART POINTER TESTING ========" << std::endl;
     std::cout << "Testing DJUniquePtr implementation..." << std::endl;
@@ -214,77 +157,6 @@ void demonstrate_polymorphism() {
     }
 }
 
-void test_LRUCache_eviction()
-{
-    std::cout << "\n===== TEST: LRUCache – eviction =====\n";
-
-    LRUCache cache(2);
-
-    MP3Track t1("Track 1", {"Artist A"}, 180, 120, 320);
-    MP3Track t2("Track 2", {"Artist B"}, 200, 125, 256);
-    MP3Track t3("Track 3", {"Artist C"}, 210, 130, 192);
-
-    // Fill cache with T1, T2
-    cache.put(t1.clone());
-    cache.put(t2.clone());
-    std::cout << "After inserting Track 1 & 2:\n";
-    cache.displayStatus();
-
-    // Access T1 → it becomes MRU, T2 becomes LRU
-    cache.get("Track 1");
-    std::cout << "After touching Track 1 (should be MRU now):\n";
-    cache.displayStatus();
-
-    // Insert T3 → should evict T2 (the LRU)
-    bool evicted = cache.put(t3.clone());
-    std::cout << "Inserting Track 3, evicted=" << evicted << " (expect 1 / true)\n";
-    cache.displayStatus();
-
-    // Verify T2 is gone, T1 and T3 remain
-    std::cout << "get(\"Track 2\") -> "
-              << (cache.get("Track 2") ? "FOUND (BUG)" : "nullptr (OK)") << "\n";
-}
-
-void test_DJControllerService_eviction()
-{
-    std::cout << "\n===== TEST: DJControllerService – eviction behavior =====\n";
-
-    DJControllerService controller(2);  // small cache to force eviction
-
-    MP3Track t1("Track 1", {"A"}, 180, 120, 320);
-    MP3Track t2("Track 2", {"B"}, 200, 122, 256);
-    MP3Track t3("Track 3", {"C"}, 210, 124, 192);
-
-    int result;
-
-    result = controller.loadTrackToCache(t1);  // MISS, no eviction
-    std::cout << "Load T1: " << result << " (expect 0)\n";
-
-    result = controller.loadTrackToCache(t2);  // MISS, no eviction
-    std::cout << "Load T2: " << result << " (expect 0)\n";
-
-    controller.displayCacheStatus();
-
-    // Access T1 so it becomes MRU, making T2 LRU
-    result = controller.loadTrackToCache(t1);  // HIT
-    std::cout << "Reload T1 (HIT): " << result << " (expect 1)\n";
-
-    // Now add T3 – cache full → MISS with eviction ⇒ -1
-    result = controller.loadTrackToCache(t3);
-    std::cout << "Load T3 (eviction should happen): " << result << " (expect -1)\n";
-
-    controller.displayCacheStatus();
-
-    // Check who got evicted
-    auto* p1 = controller.getTrackFromCache("Track 1");
-    auto* p2 = controller.getTrackFromCache("Track 2");
-    auto* p3 = controller.getTrackFromCache("Track 3");
-
-    std::cout << "Cache contains T1: " << (p1 ? "YES" : "NO") << "\n";
-    std::cout << "Cache contains T2: " << (p2 ? "YES" : "NO (expected)") << "\n";
-    std::cout << "Cache contains T3: " << (p3 ? "YES (expected)" : "NO") << "\n";
-}
-
 
 int main(int argc, char* argv[]) {    
     /**
@@ -319,11 +191,7 @@ int main(int argc, char* argv[]) {
         test_phase_1_memory_leaks();
         test_phase_2_rule_of_5();
         test_phase_3();
-        // test_DJControllerService();
-        // test_LRUCache_basic();
-        //test_LRUCache_eviction();
         demonstrate_polymorphism();
-        //test_DJControllerService_eviction();
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }
     return 0;
