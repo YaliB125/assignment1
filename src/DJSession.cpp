@@ -79,7 +79,8 @@ int DJSession::load_track_to_controller(const std::string& track_name) {
         stats.errors++;
         return 0; 
     }
-    std::cout << "[system] loading track '" << track_name << "' to controller..."<<std::endl;
+    std::cout<<"--- Processing: "<< track_name<< " ---"<<std::endl;
+    std::cout << "[System] Loading track '" << track_name << "' to controller..."<<std::endl;
     int res = controller_service.loadTrackToCache(*found_track);
     if(res == 1){
         stats.cache_hits++;
@@ -174,8 +175,10 @@ void DJSession::simulate_dj_performance() {
         }
         else{
             std::vector<std::string> track_titles = library_service.getTrackTitles();
+            //change
+            std::reverse(track_titles.begin(),track_titles.end());
             for(std::string title: track_titles){
-                std::cerr << "\n-- Processing: "<< title << std::endl;
+                std::cerr << "\n--- Processing: "<< title << " ---"<< std::endl;
                 stats.tracks_processed++;
                 load_track_to_controller(title);
                 controller_service.displayCacheStatus();
@@ -184,10 +187,8 @@ void DJSession::simulate_dj_performance() {
                 
             }
             print_session_summary();
-            reset_stats();
-            
         
-        std::cerr << "Session cancelled by user or all playlists played."<< name << std::endl;
+        //std::cerr << "Session cancelled by user or all playlists played."<< name << std::endl;
 
         }
         }
@@ -201,6 +202,8 @@ void DJSession::simulate_dj_performance() {
                 }
             else{
                 std::vector<std::string> track_titles = library_service.getTrackTitles(); 
+                // change
+                std::reverse(track_titles.begin(),track_titles.end());
                     for(std::string title: track_titles){
                         std::cerr << "\n-- Processing: "<< title << std::endl;
                         stats.tracks_processed++;
@@ -211,27 +214,16 @@ void DJSession::simulate_dj_performance() {
                         
                     }
                     print_session_summary();
-                    reset_stats();
                     
                 }
             user_selection = display_playlist_menu_from_config(); 
         }        
         
-    std::cerr << "Session cancelled by user or all playlists played."<<std::endl;
     }
+        std::cerr << "Session cancelled by user or all playlists played."<<std::endl;
 }
 
 
-void DJSession::reset_stats() { 
-    stats.tracks_processed = 0;
-    stats.cache_hits = 0;
-    stats.cache_misses = 0;
-    stats.cache_evictions = 0;
-    stats.deck_loads_a = 0;
-    stats.deck_loads_b = 0;
-    stats.transitions = 0;
-    stats.errors = 0;
-}
 
 
 

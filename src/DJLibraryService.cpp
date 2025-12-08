@@ -46,7 +46,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
             ));
         }
     }
-    std::cout << "[INFO] Track library built: " << library.size() << "tracks loaded\n";
+    std::cout << "[INFO] Track library built: " << library.size() << " tracks loaded\n";
 
 }
 
@@ -101,7 +101,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
     // For now, add a placeholder to fix the linker error
     (void)playlist_name;  // Suppress unused parameter warning
     (void)track_indices;  // Suppress unused parameter warning
-    std::cout << "[INFO] Loading playlist:" << playlist_name << std::endl;
+    std::cout << "[INFO] Loading playlist: " << playlist_name << std::endl;
     playlist= Playlist(playlist_name);
     for (size_t  i = 0; i < track_indices.size(); i++) {
         int inputIndex = track_indices[i]; 
@@ -122,7 +122,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
              }
         }
     }
-    std::cout << "[INFO] Playlist loaded: " << playlist_name << "to playlist ( " <<  playlist.get_track_count() << " tracks)"<<std::endl;
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << " ("<<  playlist.get_track_count() << " tracks)"<<std::endl;
 }
 DJLibraryService::~DJLibraryService() {  
     for (AudioTrack* track : library) {
