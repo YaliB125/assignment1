@@ -167,7 +167,6 @@ void DJSession::simulate_dj_performance() {
         }
         std::sort(playlist_names.begin(), playlist_names.end());
     
-
         for(std::string name: playlist_names){
         bool loaded = load_playlist(name);
         if(!loaded){
@@ -175,7 +174,6 @@ void DJSession::simulate_dj_performance() {
         }
         else{
             std::vector<std::string> track_titles = library_service.getTrackTitles();
-            //change
             std::reverse(track_titles.begin(),track_titles.end());
             for(std::string title: track_titles){
                 std::cerr << "\n--- Processing: "<< title << " ---"<< std::endl;
@@ -187,9 +185,6 @@ void DJSession::simulate_dj_performance() {
                 
             }
             print_session_summary();
-        
-        //std::cerr << "Session cancelled by user or all playlists played."<< name << std::endl;
-
         }
         }
     }
@@ -202,7 +197,6 @@ void DJSession::simulate_dj_performance() {
                 }
             else{
                 std::vector<std::string> track_titles = library_service.getTrackTitles(); 
-                // change
                 std::reverse(track_titles.begin(),track_titles.end());
                     for(std::string title: track_titles){
                         std::cerr << "\n-- Processing: "<< title << std::endl;
@@ -220,7 +214,7 @@ void DJSession::simulate_dj_performance() {
         }        
         
     }
-        std::cerr << "Session cancelled by user or all playlists played."<<std::endl;
+        std::cout << "Session cancelled by user or all playlists played."<<std::endl;
 }
 
 
